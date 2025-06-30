@@ -9,5 +9,4 @@ services:
     type: pserv
     name: gr_alloy_collector
     dockerfilePath: ./alloy/Dockerfile
-    startCommand: /etc/alloy/alloy --config.file=/etc/alloy/config.alloy
     plan: free
