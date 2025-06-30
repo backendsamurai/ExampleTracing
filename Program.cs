@@ -81,13 +81,8 @@ appBuilder.Services.AddOpenTelemetry()
                 builder.AddOtlpExporter(otlpOptions =>
                 {
                     // Use IConfiguration directly for Otlp exporter endpoint option.
-                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://localhost:4317"));
+                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://gr_alloy_collector:4317"));
                     otlpOptions.Protocol = OtlpExportProtocol.Grpc;
-                    // Basic auth with instance id and API key
-                    string tempoUser = "1222530";
-                    string tempoApiKey = "glc_eyJvIjoiMTQ0MTQ1MSIsIm4iOiJ0ZXN0MTIzLXRlc3QyIiwiayI6IlQ4NjFVblYyYjRJemI2NzlCanBBc0Y3OCIsIm0iOnsiciI6InVzIn19";
-                    string basicAuth = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{tempoUser}:{tempoApiKey}"));
-                    otlpOptions.Headers = $"Authorization=Basic {basicAuth}";
                 });
                 break;
 
