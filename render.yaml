@@ -9,5 +9,4 @@ services:
     type: web
     name: gr_alloy_collector
     dockerfilePath: ./alloy/Dockerfile
-    dockerCommand: alloy run /etc/alloy/config.alloy
     plan: free
