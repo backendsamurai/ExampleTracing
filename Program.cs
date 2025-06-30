@@ -81,73 +81,11 @@ appBuilder.Services.AddOpenTelemetry()
                 builder.AddOtlpExporter(otlpOptions =>
                 {
                     // Use IConfiguration directly for Otlp exporter endpoint option.
-                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://gr_alloy_collector:4317"));
+                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://localhost:4317"));
                     otlpOptions.Protocol = OtlpExportProtocol.Grpc;
                 });
                 break;
 
-            default:
-                builder.AddConsoleExporter();
-                break;
-        }
-    })
-    .WithMetrics(builder =>
-    {
-        // Metrics
-
-        // Ensure the MeterProvider subscribes to any custom Meters.
-        builder
-            .SetExemplarFilter(ExemplarFilterType.TraceBased)
-            .AddRuntimeInstrumentation()
-            .AddHttpClientInstrumentation()
-            .AddAspNetCoreInstrumentation();
-
-        switch (histogramAggregation)
-        {
-            case "EXPONENTIAL":
-                builder.AddView(instrument =>
-                {
-                    return instrument.GetType().GetGenericTypeDefinition() == typeof(Histogram<>)
-                        ? new Base2ExponentialBucketHistogramConfiguration()
-                        : null;
-                });
-                break;
-            default:
-                // Explicit bounds histogram is the default.
-                // No additional configuration necessary.
-                break;
-        }
-
-        switch (metricsExporter)
-        {
-            case "PROMETHEUS":
-                builder.AddPrometheusExporter();
-                break;
-            case "OTLP":
-                builder.AddOtlpExporter(otlpOptions =>
-                {
-                    // Use IConfiguration directly for Otlp exporter endpoint option.
-                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://localhost:4317")!);
-                });
-                break;
-            default:
-                builder.AddConsoleExporter();
-                break;
-        }
-    })
-    .WithLogging(builder =>
-    {
-        // Note: See appsettings.json Logging:OpenTelemetry section for configuration.
-        switch (logExporter)
-        {
-            case "OTLP":
-                builder.AddConsoleExporter();
-                builder.AddOtlpExporter(otlpOptions =>
-                {
-                    // Use IConfiguration directly for Otlp exporter endpoint option.
-                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://localhost:4317"));
-                });
-                break;
             default:
                 builder.AddConsoleExporter();
                 break;
