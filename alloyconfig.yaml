@@ -1,0 +1,14 @@
+traces:
+  configs:
+    - name: default
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+            http:
+
+      remote_write:
+        - endpoint: "https://tempo-prod-18-prod-eu-north-0.grafana.net/tempo"
+          basic_auth:
+            username: "1222530"
+            password: "glc_eyJvIjoiMTQ0MTQ1MSIsIm4iOiJ0ZXN0MTIzLXRlc3QyIiwiayI6IlQ4NjFVblYyYjRJemI2NzlCanBBc0Y3OCIsIm0iOnsiciI6InVzIn19"
