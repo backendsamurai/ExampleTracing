@@ -17,6 +17,10 @@ otelcol.receiver.otlp "example" {
     endpoint = "0.0.0.0:4317"
   }
 
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
   output {
     traces  = [otelcol.exporter.otlp.default.input]
   }
