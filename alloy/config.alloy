@@ -25,3 +25,7 @@ otelcol.receiver.otlp "example" {
     traces  = [otelcol.exporter.otlp.default.input]
   }
 }
+
+logging {
+  level = "debug"
+}
