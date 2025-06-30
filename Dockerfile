@@ -1,10 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-COPY *.sln .
-COPY *.csproj ./ExampleTracing/
-RUN dotnet restore
-
 COPY . ./ExampleTracing/
 WORKDIR /src/ExampleTracing
 RUN dotnet publish -c Release -o /app/out /p:PublishTrimmed=true /p:PublishSingleFile=false
@@ -15,4 +11,4 @@ COPY --from=build /app/out ./
 
 EXPOSE 80
 
-ENTRYPOINT ["dotnet", "ExampleTracing.dll"]
+ENTRYPOINT ["dotnet", "Examples.AspNetCore.dll"]
