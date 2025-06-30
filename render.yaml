@@ -6,7 +6,7 @@ services:
     plan: free
 
   - runtime: docker
-    type: pserv
+    type: web
     name: gr_alloy_collector
     dockerfilePath: ./alloy/Dockerfile
     plan: free
