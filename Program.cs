@@ -81,8 +81,8 @@ appBuilder.Services.AddOpenTelemetry()
                 builder.AddOtlpExporter(otlpOptions =>
                 {
                     // Use IConfiguration directly for Otlp exporter endpoint option.
-                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://gr_alloy_collector:8080"));
-                    otlpOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
+                    otlpOptions.Endpoint = new Uri(appBuilder.Configuration.GetValue("Otlp:Endpoint", defaultValue: "http://localhost:4317"));
+                    otlpOptions.Protocol = OtlpExportProtocol.Grpc;
                 });
                 break;
 

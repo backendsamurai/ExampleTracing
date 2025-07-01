@@ -13,8 +13,12 @@ otelcol.auth.basic "credentials" {
 }
 
 otelcol.receiver.otlp "example" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+
   http {
-    endpoint = "0.0.0.0:8080"
+    endpoint = "0.0.0.0:4318"
   }
 
   output {
