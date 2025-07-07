@@ -6,6 +6,7 @@ on:
 
 jobs:
   deploy-if-approved:
+    if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
 
     steps:
