@@ -16,24 +16,12 @@ jobs:
   test-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install semantic-release CLI
-        run: npm install semantic-release @semantic-release/commit-analyzer @semantic-release/exec --no-save
-
-      - name: Get next version
-        id: semantic_version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx semantic-release
-
-      - name: Echo generate version
-        run: echo "${{ env.GENERATED_VERSION }}"
+    - uses: actions/checkout@v3
+    - uses: codfish/semantic-release-action@v3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+    - run: |
+        echo $RELEASE_VERSION
+        echo $RELEASE_MAJOR
+        echo $RELEASE_MINOR
+        echo $RELEASE_PATCH
