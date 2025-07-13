@@ -26,7 +26,7 @@ jobs:
           node-version: 18
 
       - name: Install semantic-release CLI
-        run: npm install semantic-release @semantic-release/commit-analyzer --no-save
+        run: npm install semantic-release @semantic-release/commit-analyzer @semantic-release/exec --no-save
 
       - name: Get next version
         id: semantic_version
