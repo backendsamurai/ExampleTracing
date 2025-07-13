@@ -38,11 +38,4 @@ jobs:
             --plugins @semantic-release/commit-analyzer \
                       @semantic-release/release-notes-generator \
                       @semantic-release/github \
-            --dry-run | tee semantic.log
-          
-          # Витягнемо версію з логів dry-run без використання grep -P
-          VERSION=$(grep "The next release version is" semantic.log | sed -E 's/.*The next release version is (.*)/\1/' || echo "none")
-          echo "$VERSION"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-      - name: Show computed version
-        run: echo "Next semantic release version:${{ steps.semantic_version.outputs.version }}"
+            --dry-run --version
