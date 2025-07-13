@@ -6,7 +6,7 @@
     [
       "@semantic-release/exec",
       {
-        "shell": "echo 'GENERATED_VERSION=${nextRelease.version}' >> $GITHUB_ENV"
+        "successCmd": "echo 'GENERATED_VERSION=${nextRelease.version}' >> $GITHUB_ENV"
       }
     ]
   ]
