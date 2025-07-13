@@ -7,6 +7,6 @@ services:
 
   - runtime: docker
     type: web
-    name: gr_alloy_collector
+    name: gr_alloy
     dockerfilePath: ./alloy/Dockerfile
     plan: free
