@@ -3,11 +3,5 @@
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    [
-      "@semantic-release/exec",
-      {
-        "successCmd": "echo 'GENERATED_VERSION=${nextRelease.version}' >> $GITHUB_ENV"
-      }
-    ]
   ]
 }
