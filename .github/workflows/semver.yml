@@ -30,6 +30,8 @@ jobs:
 
       - name: Get next version
         id: semantic_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx semantic-release \
             --branches main \
