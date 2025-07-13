@@ -1,0 +1,41 @@
+name: Test Semantic Release Version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install semantic-release CLI
+        run: npm install semantic-release @semantic-release/commit-analyzer --no-save
+
+      - name: Get next version
+        id: semantic_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx semantic-release \
+            --branches main \
+            --plugins @semantic-release/commit-analyzer \
+                      @semantic-release/release-notes-generator \
+                      @semantic-release/github \
+            --dry-run | tee semantic.log
+          
+          # Витягнемо версію з логів dry-run
+          VERSION=$(grep -oP 'The next release version is \K.*' semantic.log || echo "none")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Show computed version
+        run: echo "Next semantic release version: ${{ steps.semantic_version.outputs.version }}"
