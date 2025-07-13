@@ -36,4 +36,4 @@ jobs:
           npx semantic-release
 
       - name: Echo generate version
-        run: echo "${{ env.GENERATED_VERSION }}
+        run: echo "${{ env.GENERATED_VERSION }}"
