@@ -3,11 +3,14 @@
 
 using System;
 using System.Diagnostics.Metrics;
+using System.Linq;
 using CorrelationId;
 using CorrelationId.Abstractions;
 using CorrelationId.DependencyInjection;
 using CorrelationId.Providers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +23,13 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 var appBuilder = WebApplication.CreateBuilder(args);
+
+appBuilder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 // Note: Switch between Zipkin/OTLP/Console by setting UseTracingExporter in appsettings.json.
 var tracingExporter = appBuilder.Configuration.GetValue("UseTracingExporter", defaultValue: "CONSOLE").ToUpperInvariant();
@@ -108,6 +118,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseForwardedHeaders();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -117,6 +129,11 @@ app.UseCorrelationId();
 app.MapControllers();
 
 app.MapGet("/test", (ICorrelationContextAccessor c) => c.CorrelationContext.CorrelationId);
+
+app.MapGet("/headers", (HttpContext ctx) =>
+{
+    return ctx.Request.Headers.ToDictionary();
+});
 
 // Configure OpenTelemetry Prometheus AspNetCore middleware scrape endpoint if enabled.
 if (metricsExporter.Equals("prometheus", StringComparison.OrdinalIgnoreCase))
